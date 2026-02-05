@@ -1,13 +1,19 @@
-// Absolute Minimal Node.js Sanity Check
-// No Vercel helpers, no Express, just pure Node.js
-module.exports = (req, res) => {
-    try {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('Vercel Function is ALIVE. The previous crash was likely due to missing helpers.');
-    } catch (e) {
-        console.error(e);
+// Production Endpoint with Fallback Error Handling
+try {
+    const app = require('../server/index.js');
+    module.exports = app;
+} catch (error) {
+    console.error("CRITICAL: Failed to load backend application", error);
+
+    // Fallback handler using pure Node.js (no dependencies)
+    module.exports = (req, res) => {
         res.statusCode = 500;
-        res.end('Error: ' + e.message);
-    }
-};
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({
+            error: "Backend Bootstrap Failed",
+            details: error.message,
+            stack: error.stack,
+            at: new Date().toISOString()
+        }));
+    };
+}
