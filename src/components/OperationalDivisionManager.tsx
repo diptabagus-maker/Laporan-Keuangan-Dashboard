@@ -24,8 +24,8 @@ import {
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Card } from "./ui/Primitives";
-import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
