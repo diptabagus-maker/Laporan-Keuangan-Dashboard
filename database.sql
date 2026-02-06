@@ -47,8 +47,18 @@ CREATE TABLE IF NOT EXISTS transactions (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- Table for Division Settings (Bantuan Operasional)
+CREATE TABLE IF NOT EXISTS division_settings (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    nominal DECIMAL(15, 2) NOT NULL,
+    display_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
 -- Indexing for performance
 CREATE INDEX idx_transactions_menu_id ON transactions(menu_id);
 CREATE INDEX idx_transactions_user_id ON transactions(user_id);
 CREATE INDEX idx_menus_user_id ON menus(user_id);
 CREATE INDEX idx_sections_user_id ON sections(user_id);
+CREATE INDEX idx_division_settings_order ON division_settings(display_order);
