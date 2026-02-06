@@ -84,10 +84,12 @@ export default function App() {
 
           const txMap: Record<string, Transaction[]> = {};
           allMenuIds.forEach((id, index) => {
-            txMap[id] = (txResults[index] || []).map(t => ({
-              ...t,
-              amount: Number(t.amount)
-            }));
+            txMap[id] = (txResults[index] || [])
+              .map(t => ({
+                ...t,
+                amount: Number(t.amount)
+              }))
+              .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
           });
           setTransactions(txMap);
 
@@ -104,10 +106,13 @@ export default function App() {
     try {
       const currentUserId = localStorage.getItem("userId") || '1';
       const newTx = await api.createTransaction({ ...t, menu_id: viewId, user_id: currentUserId });
-      setTransactions(prev => ({
-        ...prev,
-        [viewId]: [newTx, ...(prev[viewId] || [])]
-      }));
+      setTransactions(prev => {
+        const updated = [newTx, ...(prev[viewId] || [])];
+        return {
+          ...prev,
+          [viewId]: updated.sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+        };
+      });
     } catch (error: any) {
       console.error("Failed to add transaction:", error);
       alert("Gagal menambah transaksi: " + error.message);

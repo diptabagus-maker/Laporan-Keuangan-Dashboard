@@ -288,12 +288,16 @@ export const TransactionManager = ({
     URL.revokeObjectURL(url);
   };
 
-  const filteredData = data.filter(item => {
-    const matchesSearch = item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = filterType === "all" || item.type === filterType;
-    const matchesMonth = !filterMonth || (item.date && String(item.date).substring(0, 7) === filterMonth);
-    return matchesSearch && matchesType && matchesMonth;
-  });
+  const filteredData = useMemo(() => {
+    return data
+      .filter(item => {
+        const matchesSearch = item.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesType = filterType === "all" || item.type === filterType;
+        const matchesMonth = !filterMonth || (item.date && String(item.date).substring(0, 7) === filterMonth);
+        return matchesSearch && matchesType && matchesMonth;
+      })
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  }, [data, searchQuery, filterType, filterMonth]);
 
   // Calculate Balances
   const startOfMonth = filterMonth ? `${filterMonth}-01` : "";

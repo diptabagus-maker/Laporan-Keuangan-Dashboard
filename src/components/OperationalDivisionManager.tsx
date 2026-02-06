@@ -132,7 +132,7 @@ export const OperationalDivisionManager = ({
             item.category?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesMonth = item.date.startsWith(filterMonth);
         return matchesSearch && matchesMonth;
-    });
+    }).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
     const handleOpenAdd = () => {
         const defaultDiv = divisionSettings.length > 0 ? divisionSettings[0] : null;

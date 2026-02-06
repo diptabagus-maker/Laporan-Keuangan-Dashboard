@@ -73,7 +73,7 @@ export const DashboardHome = ({ operationalData, savingsData }: DashboardProps) 
   // Recent operational activity (HW + SI)
   const recentOps = operationalData
     .filter(t => t.menu_id === 'operational_hardware' || t.menu_id === 'operational_si')
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
     .slice(0, 8);
 
   // Chart Data (Last 6 Months) - Hardware & SI combined

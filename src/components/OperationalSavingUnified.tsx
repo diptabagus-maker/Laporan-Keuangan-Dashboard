@@ -84,7 +84,7 @@ export function OperationalSavingUnified({
   // Get transfer history
   const transferHistory = savingTransactions
     .filter((t) => t.type === "in")
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
   // Calculate saving per division (for summary display)
   const savingPerDivision = divisionsBalance.map(div => ({
