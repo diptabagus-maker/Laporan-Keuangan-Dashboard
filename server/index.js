@@ -60,7 +60,8 @@ app.get('/api/users', async (req, res) => {
             role: u.username === 'admin' ? 'admin' : 'user',
             createdAt: u.created_at
         }));
-        res.json({ success: true, users: mappedUsers });
+        console.log('Mapped users count:', mappedUsers.length);
+        res.json(mappedUsers);
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).json({ error: error.message });
